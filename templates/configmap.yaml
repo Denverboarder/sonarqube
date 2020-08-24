@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sonarqube-config
+
+data:
+
+  # App settings:
+  SERVER_PORT: "{{ .Values.service.targetPort }}"
+
+  # DB:
+  SQ_DATASOURCE_DRIVERCLASSNAME: {{ .Values.sq.datasource.driverclassname }}
+  SQ_DATASOURCE_URL: {{ .Values.sq.datasource.url }}
+  SQ_DATASOURCE_HIKARI_CONNECTIONINITSQL: "{{ .Values.sq.datasource.hikari.connectioninitsql }}"

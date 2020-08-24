@@ -1,0 +1,81 @@
+# Default values for sonarqube.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: docker.io/library/sonarqube
+  tag: latest
+  pullPolicy: Always
+#Setting the persistent volumes
+conf:
+  enabled: true
+  mountPath: /opt/sonarqube/conf
+  subPath: ""
+  accessModes:
+    - ReadWriteMany
+  size: 1Gi
+  annotations: {}
+extensions:
+  enabled: true
+  mountPath: /opt/sonarqube/extensions
+  subPath: ""
+  accessModes:
+    - ReadWriteMany
+  size: 5Gi
+  annotations: {}
+logs:
+  enabled: true
+  mountPath: /opt/sonarqube/logs
+  subPath: ""
+  accessModes:
+    - ReadWriteMany
+  size: 10Gi
+  annotations: {}
+data:
+  enabled: true
+  mountPath: /opt/sonarqube/data
+  subPath: ""
+  accessModes:
+    - ReadWriteMany
+  size: 20Gi
+  annotations: {}
+
+nameOverride: ""
+fullnameOverride: ""
+
+pod:
+  annotations: {}
+
+resources: 
+  limits:
+    cpu: 2500m
+    memory: 2000Mi
+  requests:
+    cpu: 500m
+    memory: 1000Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+Release:
+  Name: "sonarqube"
+
+service:
+  name: sonarqube
+  port: 9000
+  targetPort: 9000
+  protocol: TCP
+
+sq:
+  datasource:
+    driverclassname: org.postgresql.Driver
+    url: jdbc:postgresql://jdbc:postgresql://10.10.1.70:30002//
+    username: 'postgres'
+    password: 'X3PZt3TOWb'
+    hikari:
+      connectioninitsql:

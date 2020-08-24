@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: sq-conf
+  annotations:
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+    kind: PersistentVolumeClaim
+    namespace: sq
+    name: sq-conf
+  nfs:
+    path: /var/nfs/sq
+    server: 10.10.1.205
+    readOnly: false

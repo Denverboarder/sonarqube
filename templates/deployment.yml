@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: {{ include "sonarqube.fullname" . }}
+    labels:
+        app: {{ include "sonarqube.name" .}}
+spec:
+    replicas: {{ .Values.replicaCount}}
+    selector:
+        matchLabels:
+            app: {{ include "sonarqube.name" .}}
+    template:
+        metadata:
+            labels:
+                app: {{ include "sonarqube.name" .}}
+        spec:
+            containers:
+            - name: {{ .Chart.Name }}
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+              imagePullPolicy: Always
+              ports:
+                - name: http
+                  containerPort: {{ .Values.service.targetPort }}
+                  protocol: {{ .Values.service.protocol }}
+              envFrom:
+                - configMapRef:
+                    name: sonarqube-config
+                - secretRef:
+                    name: sonarqube-secret
+              #livenessProbe:
+              #  httpGet:
+              #    scheme: HTTP
+              #    path: /actuator/health
+              #    port: http
+              #  initialDelaySeconds: 30
+              #  timeoutSeconds: 5
+              #  periodSeconds: 20
+              #  successThreshold: 1
+              #  failureThreshold: 3
+
+              #readinessProbe:
+              #  httpGet:
+              #    scheme: HTTP
+              #    path: /actuator/health
+              #    port: http
+              #  initialDelaySeconds: 10
+              #  timeoutSeconds: 5
+              #  periodSeconds: 10
+              #  successThreshold: 1
+              #  failureThreshold: 10
+              volumeMounts:
+                {{- if .Values.conf.enabled }}
+                - name: conf
+                  mountPath: {{ .Values.conf.mountPath }}
+                  subPath: {{ .Values.conf.subPath }}
+                {{- end }}
+                {{- if .Values.extensions.enabled }}
+                - name: extensions
+                  mountPath: {{ .Values.extensions.mountPath }}
+                  subPath: {{ .Values.extensions.subPath }}
+                {{- end }}
+                {{- if .Values.logs.enabled }}
+                - name: logs
+                  mountPath: {{ .Values.logs.mountPath }}
+                  subPath: {{ .Values.logs.subPath }}
+                {{- end }}
+                {{- if .Values.data.enabled }}
+                - name: data
+                  mountPath: {{ .Values.data.mountPath }}
+                  subPath: {{ .Values.data.subPath }}
+                {{- end }}
+            volumes:
+            - name: conf
+              persistentVolumeClaim:
+                claimName: sq-conf
+            - name: extensions
+              persistentVolumeClaim:
+                claimName: sq-extensions
+            - name: logs
+              persistentVolumeClaim:
+                claimName: sq-logs
+            - name: data
+              persistentVolumeClaim:
+                claimName: sq-data
+
