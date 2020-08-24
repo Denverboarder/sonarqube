@@ -74,7 +74,7 @@ service:
 sq:
   datasource:
     driverclassname: org.postgresql.Driver
-    url: jdbc:postgresql://jdbc:postgresql://10.10.1.70:30002//
+    url: jdbc:postgresql://10.10.1.70:30002/postgres
     username: 'postgres'
     password: 'X3PZt3TOWb'
     hikari:

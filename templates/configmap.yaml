@@ -12,3 +12,12 @@ data:
   SQ_DATASOURCE_DRIVERCLASSNAME: {{ .Values.sq.datasource.driverclassname }}
   SQ_DATASOURCE_URL: {{ .Values.sq.datasource.url }}
   SQ_DATASOURCE_HIKARI_CONNECTIONINITSQL: "{{ .Values.sq.datasource.hikari.connectioninitsql }}"
+  SONARQUBE_JDBC_URL: jdbc:postgresql://10.10.1.70:30002/postgres
+  sonar.jdbc.username= sonarqube
+  sonar.jdbc.password= sonarqube
+  sonar.jdbc.url=jdbc:postgresql://localhost:9000/sonarqube
+  sonar.web.host=0.0.0.0
+  sonar.web.context=/sonarqube
+  sonar.web.port=9000
+  sonar.path.data=data
+  sonar.path.temp=temp
